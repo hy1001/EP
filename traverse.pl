@@ -5,8 +5,8 @@ use File::Copy qw(copy);
 
 my $i = 0;
 ##my $base_path = "./Previous Cases";
-# my $base_path = "/media/cantosce/Aruna Pradhan";
-# my $base_path = "/media/cantosce/Ben Olenchock";
+my $base_path = "/media/cantosce/Aruna Pradhan/Assigned Cases/Previous Cases";
+## my $base_path = "/media/cantosce/Ben Olenchock/CANTOS/Assigned Cases/Previous Cases";
 
 process_files ($base_path);
 
@@ -42,7 +42,7 @@ sub process_files {
     for (@files) {
 
 	my $wholePath = $_;
-	# print $wholePath, "\n";
+	print $wholePath, "\n";
 	my $filename = basename( $_ );
 	# print $filename, "\n";
 	
@@ -65,38 +65,38 @@ sub process_files {
 
 	    ### copy the doc file to /tmp/tmp.doc file
 
-	    # copy $_, "/tmp/tmp.doc";
+	    copy $_, "/tmp/tmp.doc";
 
-	    # ### convert tmp.doc file to tmp.html file via headless soffice
-	    # system( "soffice --headless --convert-to html --outdir /tmp /tmp/tmp.doc" );
-	    # if ( $? == -1 )
-	    # {
-	    # 	print "command failed: $!\n";
-	    # }
-	    # else
-	    # {
-	    # 	printf "command exited with value %d", $? >> 8;
-	    # }
+	    ### convert tmp.doc file to tmp.html file via headless soffice
+	    system( "soffice --headless --convert-to html --outdir /tmp /tmp/tmp.doc" );
+	    if ( $? == -1 )
+	    {
+	    	print "command failed: $!\n";
+	    }
+	    else
+	    {
+	    	printf "command exited with value %d", $? >> 8;
+	    }
 
-	    # ### cleaning the characters \a\b\r
-	    # system( " tr -d '\a\b\r' < /tmp/tmp.html > /tmp/tmp2.html " ) ;
+	    ### cleaning the characters \a\b\r
+	    system( " tr -d '\a\b\r' < /tmp/tmp.html > /tmp/tmp2.html " ) ;
 
-	    # ### now work with /tmp/tmp2.html file via perl
-	    # system( " perl /home/hpaik/projects/CANTOS/EndPointCommittee/hptest4.pl /tmp/tmp2.html " );
-	    # if ( $? == -1 )
-	    # {
-	    # 	print "command failed: $!\n";
-	    # }
-	    # else
-	    # {
-	    # 	printf "command exited with value %d", $? >> 8;
-	    # }
+	    ### now work with /tmp/tmp2.html file via perl
+	    system( " perl /home/hpaik/projects/CANTOS/EndPointCommittee/hptest4.pl /tmp/tmp2.html " );
+	    if ( $? == -1 )
+	    {
+	    	print "command failed: $!\n";
+	    }
+	    else
+	    {
+	    	printf "command exited with value %d", $? >> 8;
+	    }
 
-	    # ### cleaning up
-	    # unlink "/tmp/tmp.doc";
-	    # unlink "/tmp/tmp.html";
-	    # ### save the html file with the original filename
-	    # rename "/tmp/tmp2.html", "/tmp/".$filename.".html";
+	    ### cleaning up
+	    unlink "/tmp/tmp.doc";
+	    unlink "/tmp/tmp.html";
+	    ### save the html file with the original filename
+	    rename "/tmp/tmp2.html", "/tmp/".$filename.".html";
 	} else {
 
 	}

@@ -4,14 +4,86 @@ use Data::Dumper;
 sub death {
     my $tree = shift;
     my $fileName = shift;
-    print "\nDeath\n";
+    print "\n=========================== Death ========================\n";
     my @spans = $tree->look_down( _tag => 'span', lang => 'en-US');
 
     # print "\n *** # spans : ", scalar( @spans ), " *** \n";
     if( scalar( @span ) != 14 ) {
 	print "##############\n";
 	print "\n *** # spans : ", scalar( @spans ), " *** \n";
+    } 
+    # else {
+    # }
+
+    my @DeathCheckBoxes31 = ("Q1_No", "Q1_Yes", 
+			   "Q3_Cardio", "Q3_NonCV", "Q3_Unk",
+			   "Q4_1", "Q4_3", "Q4_5", "Q4_6", "Q4_8", "Q4_9", 
+			   "Q4_13", "Q4_13a", "Q4_13b", "Q4_13c",
+			   "Q4_14", "Q4_15", "Q4_16", "Q4_17",
+			   "Q5_2", "Q5_4", "Q5_5", "Q5_6", "Q5_7", "Q5_8",
+			   "Q5_9", "Q5_10", "Q5_11", "Q5_12",
+			     "Q6_No", "Q6_Yes" );
+
+    my @DeathCheckBoxes28 = ("Q1_No", "Q1_Yes", 
+			     "Q3_Cardio", "Q3_NonCV", "Q3_Unk",
+			     "Q4_1", "Q4_3", "Q4_5", "Q4_6", "Q4_8", "Q4_9", 
+			     "Q4_13", # "Q4_13a", "Q4_13b", "Q4_13c",
+			     "Q4_14", "Q4_15", "Q4_16", "Q4_17",
+			     "Q5_2", "Q5_4", "Q5_5", "Q5_6", "Q5_7", "Q5_8",
+			     "Q5_9", "Q5_10", "Q5_11", "Q5_12",
+			     "Q6_No", "Q6_Yes" );
+
+    my @checkboxes = $tree->look_down( _tag => 'input', type => 'checkbox' );
+
+    if( scalar( @checkboxes ) == 31 ) {
+
+
+	my $i = 0;
+	foreach my $node ( @checkboxes ) {
+	    print $DeathCheckBoxes31[ $i++ ], "\t";
+	    if ( exists $node->{'checked'} ) {
+		print "checked";
+	    } 
+	    print "\n";
+	}
+    } elsif ( scalar( @checkboxes ) == 28 ) {
+
+	print "##############\n";
+	print "\n *** # checkboxes : ", scalar( @checkboxes ), " *** \n";
+
+	my $i = 0;
+	foreach my $node ( @checkboxes ) {
+	    if ( $i == 11 ) {
+		# my @tmp = $node->content_list();
+		my @tmp = $node->parent()->content_list();
+		# print scalar( @tmp ), "\n";
+		print $tmp[1] , "\n";
+		if ( $tmp[1] ne " 13. Other vascular " ) {
+		    print "!!!!!!!!!!!!!!!!!!!!!!11WRONG!!!!!!!!!!!!!!!!!!!!!!!!\n";
+		}
+	    ## print  Dumper( $node->parent()->content_list() );
+	    }
+
+	    print $DeathCheckBoxes28[ $i++ ], "\t";
+	    if ( exists $node->{'checked'} ) {
+		print "checked";
+	    } 
+	    
+
+	    print "\n";
+	}
+    } else {
+	
+	print "##############\n";
+	print "\n *** # checkboxes : ", scalar( @checkboxes ), " *** \n";
+	
     }
+    
+
+
+
+    print "----------------------- end Death ------------------------\n";
+    
     return 1;
 }
 
@@ -48,12 +120,13 @@ foreach my $file_name (@ARGV) {
     my @tmp = $bolds[0]->content_list();
     print "\n******* ",$tmp[0], " ************\n";
     
-    if ( $tmp[0] =~ m/Death/ ) {
+    if ( $tmp[0] =~ m/CANTOS Death Adjudication/ ) {
 	&death( $tree , $file_name);
     }
-    elsif ( $tmp[0]  =~ "Myocardial") {
-     	&mi( $tree, $file_name );
-    }
+
+    # elsif ( $tmp[0]  =~ "Myocardial") {
+    #  	&mi( $tree, $file_name );
+    # }
 
     # my @spans = $tree->look_down( _tag => 'span', lang => 'en-US');
     # print "\n *** # spans : ", scalar( @spans ), " *** \n";
